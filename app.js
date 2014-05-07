@@ -3,11 +3,12 @@ angular.module('CS670', []);
 angular.module('CS670').controller('Main', ['$scope',
     function($scope) {
         $scope.map = {
-            height: 50,
-            width: 50
+            height: 500,
+            width: 500
         };
-
+        $scope.defaultRadius = Math.sqrt(Math.pow($scope.map.height / 10, 2) + Math.pow($scope.map.width / 10, 2)) / 2;
         $scope.circles = [];
+        $scope.paths = [];
 
         $scope.placeCircle = function(event) {
             if (!$scope.enableAddingObstacles)
@@ -22,7 +23,7 @@ angular.module('CS670').controller('Main', ['$scope',
             $scope.circles.push({
                 x: x,
                 y: y,
-                r: r || 15
+                r: r || $scope.defaultRadius
             })
         };
 
@@ -32,13 +33,41 @@ angular.module('CS670').controller('Main', ['$scope',
                 $scope.circles.push({
                     x: Math.random() * $scope.map.width,
                     y: Math.random() * $scope.map.height,
-                    r: 15
+                    r: $scope.defaultRadius
                 })
             }
         };
 
-        $scope.search = function(){
+        $scope.getNaiveBinaryMatrixFromCanvasData = function(imageData) {
+            var height = imageData.height,
+                width = imageData.width,
+                data = imageData.data,
+                matrix = new Matrix({
+                    height: height,
+                    width: width
+                });
+
+            for (var i = 0; i < height; i++) {
+                for (var j = 0; j < width; j++) {
+                    var flatMatrixOffset = (i * width + j) * 4;
+                    matrix[i][j] = (data[flatMatrixOffset] || data[flatMatrixOffset + 1] || data[flatMatrixOffset + 2] || data[flatMatrixOffset + 3]) ? 1 : 0;
+                }
+            }
+
+            return matrix;
+        }
+
+        $scope.search = function() {
             var data = $scope.getContextData();
+            var matrix = $scope.getNaiveBinaryMatrixFromCanvasData(data);
+            matrix.transform(function(value, w, h) {
+                return new Node({
+                    obstacle: !! value
+                });
+            });
+
+            var path = new aStarSearch().search(matrix);
+            $scope.paths.push(path);
         };
 
         $scope.reset = function() {

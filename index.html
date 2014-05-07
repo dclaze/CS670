@@ -3,9 +3,13 @@
 <head>
     <link rel="stylesheet" href="index.css" type="text/css"></link>
     <script src="bower_components/angular/angular.js"></script>
+    <script src="matrix/matrix.js"></script>
     <script src="app.js"></script>
     <script src="easyCanvas.js"></script>
     <script src="canvasCircle.js"></script>
+    <script src="canvasPath.js"></script>
+    <script src="node.js"></script>
+    <script src="aStarSearch.js"></script>
 </head>
 
 <body class="fullscreen" ng-app="CS670">
@@ -19,6 +23,7 @@
         </br>
         <canvas class="map" easy-canvas ng-attr-height="{{map.height}}" ng-attr-width="{{map.width}}" ng-click="placeCircle($event)">
             <div ng-repeat="circle in circles" canvas-circle context="context" cx="circle.x" cy="circle.y" cr="circle.r"></div>
+            <div ng-repeat="path in paths" canvas-path context="context" path="path"></div>
         </canvas>
     </div>
 </body>
