@@ -3,8 +3,8 @@ angular.module('CS670', []);
 angular.module('CS670').controller('Main', ['$scope',
     function($scope) {
         $scope.map = {
-            height: 500,
-            width: 500
+            height: 50,
+            width: 50
         };
 
         $scope.circles = [];
@@ -27,7 +27,7 @@ angular.module('CS670').controller('Main', ['$scope',
         };
 
         $scope.addObstacles = function() {
-            var numberOfCircles = 1;
+            var numberOfCircles = 100;
             for (var i = 0; i < numberOfCircles; i++) {
                 $scope.circles.push({
                     x: Math.random() * $scope.map.width,
@@ -35,6 +35,10 @@ angular.module('CS670').controller('Main', ['$scope',
                     r: 15
                 })
             }
+        };
+
+        $scope.search = function(){
+            var data = $scope.getContextData();
         };
 
         $scope.reset = function() {

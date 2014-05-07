@@ -5,6 +5,10 @@ angular.module('CS670').directive('easyCanvas', function() {
                 context = element.getContext("2d");
 
             scope.context = context;
+
+            scope.getContextData = function() {
+                return scope.context.getImageData(0, 0, element.width, element.height);
+            }
         }
     };
 });
