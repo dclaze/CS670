@@ -14,6 +14,12 @@ angular.module('CS670').controller('Main', ['$scope', '$http',
         $scope.heuristics = [{
             name: 'Manhattan Distance',
             type: 'manhattan'
+        }, {
+            name: 'Diagonal',
+            type: 'diagonal'
+        }, {
+            name: 'Dykstra',
+            type: 'dykstra'
         }]
 
         $scope.$watch('scale', function(scale) {
@@ -49,7 +55,7 @@ angular.module('CS670').controller('Main', ['$scope', '$http',
         };
 
         $scope.addObstacles = function() {
-            var numberOfCircles = 100;
+            var numberOfCircles = 15;
             for (var i = 0; i < numberOfCircles; i++) {
                 $scope.circles.push({
                     x: Math.random() * $scope.map.width,
@@ -107,7 +113,7 @@ angular.module('CS670').controller('Main', ['$scope', '$http',
         };
 
         $scope.sendToDrone = function() {
-            $http.get('http://localhost:3111/executePath?path=' + JSON.stringify($scope.paths[0]), {
+            $http.get('http://localhost:3111/executePath?path=' + JSON.stringify($scope.paths[0]) + "&width=" + $scope.map.width + "&scale=" + $scope.scale, {
                 data: $scope.path
             }).success(function() {
                 console.log("Success");

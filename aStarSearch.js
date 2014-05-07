@@ -37,6 +37,12 @@ var aStarSearch = (function() {
 
     aStarSearch.prototype.heuristic = function() {
         switch (this.heuristicType) {
+        	case "diagonal":
+        		return this.diagonal.apply(this, arguments);
+        		break;
+        	case "dykstra":
+        		return 0;
+        		break;
             case "manhattan":
             default:{
                 return this.manhattan.apply(this, arguments);
@@ -45,11 +51,17 @@ var aStarSearch = (function() {
         }
     };
 
+    aStarSearch.prototype.diagonal = function(x1, y1, x2, y2) {
+        dx = Math.abs(x2 - x1)
+    	dy = Math.abs(y2 - y1)
+    	return Math.max(dx, dy);
+    };
+
     aStarSearch.prototype.manhattan = function(x1, y1, x2, y2) {
         var d1 = Math.abs(x2 - x1);
         var d2 = Math.abs(y2 - y1);
         return d1 + d2;
-    }
+    };
 
     aStarSearch.prototype.getPath = function(node) {
         var curr = node;

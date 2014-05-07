@@ -18,6 +18,9 @@ angular.module('CS670').directive('canvasPath', function() {
 
             scope.$on('$destroy', function() {
                 var path = scope.path;
+                if (!path)
+                    return;
+
                 var x = path[0][0],
                     y = path[0][1],
                     width = path[path.length - 1][0] - x
