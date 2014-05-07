@@ -1,21 +1,33 @@
 angular.module('CS670', []);
 
-angular.module('CS670').controller('Main', ['$scope',
-    function($scope) {
+angular.module('CS670').controller('Main', ['$scope', '$http',
+    function($scope, $http) {
         $scope.map = {
-            height: 500,
-            width: 500
+            height: 600,
+            width: 600
         };
         $scope.defaultRadius = Math.sqrt(Math.pow($scope.map.height / 10, 2) + Math.pow($scope.map.width / 10, 2)) / 2;
         $scope.circles = [];
         $scope.paths = [];
+        $scope.runTime = 0.0;
+        $scope.scale = 1;
+        $scope.heuristics = [{
+            name: 'Manhattan Distance',
+            type: 'manhattan'
+        }]
+
+        $scope.$watch('scale', function(scale) {
+            if (scale && scale > 0) {
+                $scope.defaultRadius = Math.sqrt(Math.pow($scope.map.height / (15 - scale), 2) + Math.pow($scope.map.width / (15 - scale), 2)) / 2;
+            }
+        })
 
         $scope.startingPoint = {
             x: 0,
-            y: $scope.map.height
+            y: $scope.map.height - 1
         };
         $scope.endingPoint = {
-            x: $scope.map.width,
+            x: $scope.map.width - 1,
             y: 0
         };
 
@@ -71,17 +83,38 @@ angular.module('CS670').controller('Main', ['$scope',
             var matrix = $scope.getNaiveBinaryMatrixFromCanvasData(data);
             matrix.transform(function(value, w, h) {
                 return new Node({
-                    obstacle: !! value
+                    x: h,
+                    y: w,
+                    obstacle: !! value,
+                    cost: !! value ? 0 : 1
                 });
             });
 
-            var path = new aStarSearch().search(matrix, $scope.startingPoint, $scope.endingPoint);
+            var result = new aStarSearch().search(matrix, $scope.startingPoint, $scope.endingPoint, $scope.heuristic.type || 'manhattan')
+            $scope.runTime = result.time;
+            var path = result.path.map(function(node) {
+                return [node.x, node.y];
+            });
             $scope.paths.push(path);
         };
 
         $scope.reset = function() {
             while ($scope.circles.length)
                 $scope.circles.pop();
-        }
+            while ($scope.paths.length)
+                $scope.paths.pop();
+            $scope.runTime = 0.0;
+        };
+
+        $scope.sendToDrone = function() {
+            $http.get('http://localhost:3111/executePath?path=' + JSON.stringify($scope.paths[0]), {
+                data: $scope.path
+            }).success(function() {
+                console.log("Success");
+            })
+                .error(function() {
+                    console.log("Fail");
+                });
+        };
     }
 ]);

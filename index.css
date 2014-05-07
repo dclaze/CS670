@@ -10,6 +10,13 @@
 	padding:0;
 }
 
+.timer{
+	font-size: 5em;
+	position: absolute;
+	top: 0;
+	right: 0;
+}
+
 .map{
 	border:5px solid black;
 }

@@ -11,23 +11,35 @@
     <script src="canvasPath.js"></script>
     <script src="node.js"></script>
     <script src="aStarSearch.js"></script>
+    <script src="BinaryHeap.js"></script>
+    <script src="Timer.js"></script>
 </head>
 
 <body class="fullscreen" ng-app="CS670">
     <h1>A* Search Bot</h1>
-    <div ng-controller="Main">
+    <div ng-controller="Main" style="padding:10px">
         <button ng-show="!enableAddingObstacles" ng-click="enableAddingObstacles = true">Enable Adding Obstacle</button>
         <button ng-show="enableAddingObstacles" ng-click="enableAddingObstacles = false">Disable Adding Obstacle</button>
         <button ng-click="addObstacles()">Add Random Obstacles</button>
+        </br>
+        Heuristic
+        <select ng-model="heuristic" ng-options="h.name for h in heuristics"></select>
+        </br>
+        Drone Scale
+        <input type="number" ng-model="scale" ng-min="0"></input>
+        </br>
         <button ng-click="search()">Search</button>
         <button ng-click="reset()">Reset</button>
+        <span class="timer">{{runTime}} ms</span>
         </br>
         <canvas class="map" easy-canvas ng-attr-height="{{map.height}}" ng-attr-width="{{map.width}}" ng-click="placeCircle($event)">
-            <div ng-repeat="circle in circles" canvas-circle context="context" cx="circle.x" cy="circle.y" cr="circle.r"></div>
+            <div ng-repeat="circle in circles" canvas-circle context="context" cx="circle.x" cy="circle.y" cr="circle.r" scale="scale"></div>
             <div ng-repeat="path in paths" canvas-path context="context" path="path"></div>
             <!-- <div canvas-rectangle context="context" rectangle="startingPoint"></div>
             <div canvas-rectangle context="context" rectangle="endingPoint"></div> -->
         </canvas>
+        </br>
+        <button ng-click="sendToDrone()">Send to Drone</button>
     </div>
 </body>
 

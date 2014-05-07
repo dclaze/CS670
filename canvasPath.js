@@ -6,7 +6,7 @@ angular.module('CS670').directive('canvasPath', function() {
         },
         link: function(scope, element, attrs, ngModelCtrl) {
             scope.context.beginPath();
-
+            scope.context.strokeStyle = 'red';
             for (var i = 0; i < scope.path.length; i++) {
                 var point = scope.path[i];
                 if (i == 0)
@@ -16,11 +16,14 @@ angular.module('CS670').directive('canvasPath', function() {
             }
             scope.context.stroke();
 
-            // scope.$on('$destroy', function() {
-            //     scope.context.beginPath();
-            //     scope.context.clearRect(scope.x - scope.r - 1, scope.y - scope.r - 1, scope.r * 2 + 2, scope.r * 2 + 2);
-            //     scope.context.closePath();
-            // })
+            scope.$on('$destroy', function() {
+                var path = scope.path;
+                var x = path[0][0],
+                    y = path[0][1],
+                    width = path[path.length - 1][0] - x
+                    height = path[path.length - 1][1] - y;
+                scope.context.clearRect(x, y, width, height);
+            })
         }
     };
 });
