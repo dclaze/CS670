@@ -4,20 +4,24 @@
     <link rel="stylesheet" href="index.css" type="text/css"></link>
     <script src="bower_components/angular/angular.js"></script>
     <script src="app.js"></script>
+    <script src="canvasCircle.js"></script>
 </head>
 
 <body class="fullscreen" ng-app="CS670">
     <h1>A* Search Bot</h1>
     <div ng-controller="Main">
-        <button>Add Obstacle</button>
+        <button ng-show="!enableAddingObstacles" ng-click="enableAddingObstacles = true">Enable Adding Obstacle</button>
+        <button ng-show="enableAddingObstacles" ng-click="enableAddingObstacles = false">Disable Adding Obstacle</button>
         <button ng-click="addObstacles()">Add Random Obstacles</button>
-        <button>Reset</button>
+        <button ng-click="reset()">Reset</button>
         </br>
-
-        <svg class="map" ng-attr-height="{{map.height}}" ng-attr-width="{{map.width}}">
+        <svg class="map" ng-attr-height="{{map.height}}" ng-attr-width="{{map.width}}" ng-click="placeCircle($event)">
             <circle ng-repeat="circle in circles" ng-attr-cx="{{circle.x}}" ng-attr-cy="{{circle.y}}" ng-attr-r="{{circle.r}}">
             </circle>
         </svg>
+        <!-- <canvas class="map" ng-attr-height="{{map.height}}" ng-attr-width="{{map.width}}" ng-click="placeCircle($event)">
+            <div ng-repeat="circle in circles" data-canvas-circle="" cx="circle.x" cy="circle.y" cr="circle.r"></div>
+        </canvas> -->
     </div>
 </body>
 
