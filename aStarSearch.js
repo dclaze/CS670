@@ -3,7 +3,7 @@ var aStarSearch = (function() {
 
     aStarSearch.prototype.search = function(startingPoint, matrix) {
         // var searchStack = [];
-        // var startingNode = matrix[startingPoint.x, startingPoint.y];
+        var startingNode = matrix[startingPoint.x, startingPoint.y];
         // searchStack.push(startingPoint)
         return [[10, 10], [20, 30], [30, 20]];
     }

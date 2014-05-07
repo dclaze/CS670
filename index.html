@@ -7,6 +7,7 @@
     <script src="app.js"></script>
     <script src="easyCanvas.js"></script>
     <script src="canvasCircle.js"></script>
+    <script src="canvasRectangle.js"></script>
     <script src="canvasPath.js"></script>
     <script src="node.js"></script>
     <script src="aStarSearch.js"></script>
@@ -24,6 +25,8 @@
         <canvas class="map" easy-canvas ng-attr-height="{{map.height}}" ng-attr-width="{{map.width}}" ng-click="placeCircle($event)">
             <div ng-repeat="circle in circles" canvas-circle context="context" cx="circle.x" cy="circle.y" cr="circle.r"></div>
             <div ng-repeat="path in paths" canvas-path context="context" path="path"></div>
+            <!-- <div canvas-rectangle context="context" rectangle="startingPoint"></div>
+            <div canvas-rectangle context="context" rectangle="endingPoint"></div> -->
         </canvas>
     </div>
 </body>

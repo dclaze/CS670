@@ -10,6 +10,15 @@ angular.module('CS670').controller('Main', ['$scope',
         $scope.circles = [];
         $scope.paths = [];
 
+        $scope.startingPoint = {
+            x: 0,
+            y: $scope.map.height
+        };
+        $scope.endingPoint = {
+            x: $scope.map.width,
+            y: 0
+        };
+
         $scope.placeCircle = function(event) {
             if (!$scope.enableAddingObstacles)
                 return;
@@ -66,7 +75,7 @@ angular.module('CS670').controller('Main', ['$scope',
                 });
             });
 
-            var path = new aStarSearch().search(matrix);
+            var path = new aStarSearch().search(matrix, $scope.startingPoint, $scope.endingPoint);
             $scope.paths.push(path);
         };
 
